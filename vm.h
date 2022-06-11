@@ -15,15 +15,14 @@
 #define VM_MAX_LOADSIZE 		(65536)
 #define VM_MAX_LOADSIZE_S 	"65536"
 
-#define DEFINE_OPCODE(name) void VM_opcode_##name(vm_state_t* self,		\
-															__vm_word_t* operands)
+#define DEFINE_OPCODE(name) void VM_opcode_##name(vm_state_t* self, __vm_word_t* operands)
 #define OPCODE(name) VM_opcode_##name
 
 #ifdef DEBUG
 #	include <stdio.h>
 #	define DBG(x, ...) do {																											\
-		fprintf( stdout, "%s:%s:%d: " x "\n", "DBG", __func__, 										\
-				__LINE__, ##__VA_ARGS__);																							\
+		fprintf( stdout, "%s:%s:%d: " x "\n", "DBG", __func__,		\
+				__LINE__, ##__VA_ARGS__);			\
 		fflush (stdout);																													\
 		fflush (stderr);																													\
 		} while (0)
@@ -168,7 +167,6 @@ VM_free (void)
 
 static __vm_word_t
 VM_read_word (vm_state_t * state)
-/* passed by value for quicker access */
 {
   __vm_word_t word = *(__vm_word_t *) (&state->buffer.buffer[state->pc]);
   state->pc += sizeof (__vm_word_t);
@@ -178,7 +176,7 @@ VM_read_word (vm_state_t * state)
 static __vm_word_t
 VM_read_word_at (vm_state_t * state, __vm_word_t idx)
 {
-  return *(__vm_word_t *) (&state->buffer.buffer[2 * idx]);
+  return *(__vm_word_t *) (&state->buffer.buffer[sizeof (__vm_word_t) * idx]);
 }
 
 static inline bool
