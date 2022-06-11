@@ -15,7 +15,7 @@ print_traceback (vm_state_t state)
 }
 
 __attribute__((noreturn))
-     void halt_with_traceback (vm_state_t state, bool do_free)
+void halt_with_traceback (vm_state_t state, bool do_free)
 {
   print_traceback (state);
   if (do_free)
